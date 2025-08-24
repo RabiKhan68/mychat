@@ -7,7 +7,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 10px; /* padding for small screens */
+  box-sizing: border-box;
 }
 
 .app-container {
@@ -17,11 +19,12 @@ body {
   width: 100%;
 }
 
+/* === Chat Box === */
 .chat-box {
   background: #2a2a40;
   border-radius: 14px;
-  width: 420px;
-  max-width: 95%;
+  width: 100%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -69,6 +72,7 @@ body {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+  max-height: 60vh; /* prevents overflow on small screens */
   scrollbar-width: thin;
   scrollbar-color: #555 #2a2a40;
 }
@@ -76,10 +80,12 @@ body {
 .messages-container::-webkit-scrollbar {
   width: 6px;
 }
+
 .messages-container::-webkit-scrollbar-thumb {
   background-color: #555;
   border-radius: 3px;
 }
+
 .messages-container::-webkit-scrollbar-track {
   background: #2a2a40;
 }
@@ -180,10 +186,11 @@ body {
 /* === Username Screen === */
 .username-box {
   background: #2a2a40;
-  padding: 40px 30px;
+  padding: 40px 20px; /* smaller padding for mobile */
   border-radius: 12px;
   text-align: center;
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -221,4 +228,39 @@ body {
 
 .username-input button:hover {
   background: #3a73d9;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 480px) {
+  .chat-box {
+    width: 100%;
+  }
+
+  .messages-container {
+    max-height: 50vh;
+    padding: 10px;
+  }
+
+  .message-form input {
+    font-size: 13px;
+  }
+
+  .message-form button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .username-box {
+    padding: 30px 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-box {
+    max-width: 90%;
+  }
+
+  .username-box {
+    max-width: 90%;
+  }
 }
