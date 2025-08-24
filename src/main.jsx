@@ -26,7 +26,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   if (document.querySelector(".install-btn")) return;
 
   const installBtn = document.createElement("button");
-  installBtn.textContent = "📥 Download App";
+  installBtn.textContent = "Download App";
   installBtn.className = "install-btn";
   document.body.appendChild(installBtn);
 
