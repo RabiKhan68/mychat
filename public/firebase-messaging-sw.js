@@ -1,10 +1,10 @@
 // public/firebase-messaging-sw.js
 
-// ✅ Use importScripts (no "import" allowed in service workers)
+// ✅ Import Firebase scripts (compat version required for SW)
 importScripts("https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js");
 
-// ✅ Initialize Firebase inside service worker
+// ✅ Initialize Firebase inside Service Worker
 firebase.initializeApp({
   apiKey: "AIzaSyCV2S2sOE-NwCyaOxw1nD0fWnZb4K77gqs",
   authDomain: "mattho-d9ab3.firebaseapp.com",
@@ -17,16 +17,41 @@ firebase.initializeApp({
 // ✅ Init messaging
 const messaging = firebase.messaging();
 
-// ✅ Handle background messages
+// ✅ Handle background push messages
 messaging.onBackgroundMessage((payload) => {
-  console.log("📩 Background message:", payload);
+  console.log("📩 Background message received:", payload);
 
-  const notificationTitle = payload.notification?.title || "New Message";
+  // Prefer notification fields, but fall back to data if needed
+  const notificationTitle =
+    payload.notification?.title || payload.data?.title || "New Message";
   const notificationOptions = {
-    body: payload.notification?.body || "You have a new message!",
-    icon: "/chat.png", // place a chat.png in public/
+    body: payload.notification?.body || payload.data?.body || "You have a new message!",
+    icon: "/chat.png", // make sure chat.png is in your /public folder
+    badge: "/chat.png", // optional small icon
+    data: {
+      url: payload.fcmOptions?.link || "/", // fallback if no click_action provided
+    },
   };
 
-  // Show push notification
+  // Show notification
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// ✅ Handle notification click (opens app)
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      // If app already open, focus it
+      for (const client of clientList) {
+        if (client.url === "/" && "focus" in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise, open a new tab
+      if (clients.openWindow) {
+        return clients.openWindow("/");
+      }
+    })
+  );
 });

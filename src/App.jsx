@@ -21,6 +21,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [tempName, setTempName] = useState("");
   const [editId, setEditId] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // 🔹 Restore username from localStorage
   useEffect(() => {
@@ -53,27 +54,47 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // 🔹 Request notification permission + get FCM token
+  // 🔹 Request notification permission + FCM token
   useEffect(() => {
     const setupFCM = async () => {
       const token = await requestNotificationPermission();
       if (token) {
-        console.log("FCM Token:", token);
-        // ✅ You can send this token to your backend to send push notifications
+        console.log("✅ FCM Token:", token);
+        // send to backend if needed
       }
     };
     setupFCM();
 
-    // 🔹 Handle foreground notifications
-    onMessage(messaging, (payload) => {
-      console.log("📩 Foreground message:", payload);
-      if (payload.notification) {
-        new Notification(payload.notification.title, {
-          body: payload.notification.body,
-          icon: "/chat.png",
-        });
+    // 🔹 Handle foreground FCM notifications
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log("📩 Foreground FCM message:", payload);
+      if (payload.notification && Notification.permission === "granted") {
+        if (document.visibilityState !== "visible") {
+          new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: "/chat.png",
+          });
+        }
       }
     });
+
+    return () => unsubscribe();
+  }, []);
+
+  // 🔹 Unread count in tab title
+  useEffect(() => {
+    if (unreadCount > 0) {
+      document.title = `(${unreadCount}) Room Chat`;
+    } else {
+      document.title = "Room Chat";
+    }
+  }, [unreadCount]);
+
+  // 🔹 Reset unread count when tab focused
+  useEffect(() => {
+    const handleFocus = () => setUnreadCount(0);
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
   }, []);
 
   // 🔹 Send or edit a message
@@ -106,16 +127,23 @@ function App() {
   // 🔹 Play sound effects
   const playSound = (type) => {
     const audio = new Audio(type === "sent" ? "/sent.mp3" : "/received.mp3");
-    audio.play().catch(() => {});
+    audio.play().catch(() => {}); // ignore autoplay block errors
   };
 
-  // 🔹 Play "received" sound when a new message comes (not mine)
+  // 🔹 Handle received messages (sound + unread counter)
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages.length > 0 && username) {
       const lastMsg = messages[messages.length - 1];
-      if (lastMsg.user !== username) playSound("received");
+      if (lastMsg.user !== username) {
+        playSound("received");
+
+        // Increment unread count only if tab not visible
+        if (document.visibilityState !== "visible") {
+          setUnreadCount((prev) => prev + 1);
+        }
+      }
     }
-  }, [messages]);
+  }, [messages, username]);
 
   // 🔹 Username input screen
   if (!username) {
