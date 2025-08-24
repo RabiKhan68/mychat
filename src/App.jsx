@@ -125,7 +125,7 @@ function App() {
     return (
       <div className="app-container">
         <div className="username-box">
-          <h2>Welcome to React Chat</h2>
+          <h2>Welcome to Room Chat</h2>
           <p>Please enter a username to continue:</p>
           <div className="username-input">
             <input
