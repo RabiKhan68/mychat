@@ -1,15 +1,15 @@
 // public/firebase-messaging-sw.js
 
 // ✅ Use importScripts (no "import" allowed in service workers)
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js");
 
 // ✅ Initialize Firebase inside service worker
 firebase.initializeApp({
   apiKey: "AIzaSyCV2S2sOE-NwCyaOxw1nD0fWnZb4K77gqs",
   authDomain: "mattho-d9ab3.firebaseapp.com",
   projectId: "mattho-d9ab3",
-  storageBucket: "mattho-d9ab3.firebasestorage.app",
+  storageBucket: "mattho-d9ab3.appspot.com",
   messagingSenderId: "623456589591",
   appId: "1:623456589591:web:09f87052a7cca2ed7f4952",
 });
