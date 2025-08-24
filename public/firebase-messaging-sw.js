@@ -6,12 +6,12 @@ importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-com
 
 // ✅ Initialize Firebase inside service worker
 firebase.initializeApp({
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyCV2S2sOE-NwCyaOxw1nD0fWnZb4K77gqs",
+  authDomain: "mattho-d9ab3.firebaseapp.com",
+  projectId: "mattho-d9ab3",
+  storageBucket: "mattho-d9ab3.firebasestorage.app",
+  messagingSenderId: "623456589591",
+  appId: "1:623456589591:web:09f87052a7cca2ed7f4952",
 });
 
 // ✅ Init messaging
