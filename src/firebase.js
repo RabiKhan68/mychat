@@ -22,3 +22,26 @@ export const auth = getAuth(app);
 signInAnonymously(auth).catch(console.error);
 
 export const messaging = getMessaging(app);
+
+export const requestNotificationPermission = async () => {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      // ✅ This is where you pass the VAPID key
+      const token = await getToken(messaging, {
+        vapidKey: "BE2QYSq0gUpSagRjb54fQZP2QN85XvWja12AiScoECAn8OEPKQqd3BSjXzcE3V8EKwg5BGIpI7uOX0acUvmZWfs"
+      });
+      console.log("📲 Device token:", token);
+      return token;
+    } else {
+      console.log("Permission denied for notifications");
+    }
+  } catch (err) {
+    console.error("Error getting notification permission", err);
+  }
+};
+
+// Optional: handle foreground messages
+onMessage(messaging, (payload) => {
+  console.log("📩 Foreground message:", payload);
+});
