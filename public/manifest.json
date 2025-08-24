@@ -1,0 +1,20 @@
+{
+  "name": "React Chat",
+  "short_name": "ChatApp",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4cafef",
+  "icons": [
+    {
+      "src": "/chat.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/chat.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
