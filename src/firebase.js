@@ -29,7 +29,7 @@ export const requestNotificationPermission = async () => {
     if (permission === "granted") {
       // ✅ This is where you pass the VAPID key
       const token = await getToken(messaging, {
-        vapidKey: "BE2QYSq0gUpSagRjb54fQZP2QN85XvWja12AiScoECAn8OEPKQqd3BSjXzcE3V8EKwg5BGIpI7uOX0acUvmZWfs"
+        vapidKey: "BFVCPYHnLf_uATPatyc-O1PxznJmLifZVU-sw7iDgLXcFUFSNaTz45NEqnqENSbR_PEo7UgOGx-_gJYMHEaDfqY"
       });
       console.log("📲 Device token:", token);
       return token;
